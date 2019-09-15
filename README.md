@@ -1,2 +1,2 @@
-# sPong
+# Simple Pong
 Game
