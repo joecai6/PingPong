@@ -1,2 +1,2 @@
-# PingPong
+# sPong
 Game
