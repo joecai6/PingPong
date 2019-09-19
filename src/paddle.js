@@ -15,6 +15,7 @@ export default class Paddle {
   }
 
   draw(c) {
+    c.fillStyle = "green";
     c.fillRect(this.pos.x, this.pos.y, this.width, this.height);
   }
 

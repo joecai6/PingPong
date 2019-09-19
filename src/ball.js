@@ -1,3 +1,4 @@
+import { detectionCollision } from "./collisionDetection.js";
 export default class Ball {
   constructor(screen) {
     this.gameHeight = screen.gameHeight;
@@ -5,9 +6,14 @@ export default class Ball {
 
     this.game = screen;
     this.img = document.getElementById("ball");
-    this.speed = { x: 7, y: 7 };
-    this.pos = { x: 10, y: 10 };
+
     this.size = 16;
+    this.reset();
+  }
+
+  reset(){
+    this.speed = { x: 5, y: -4 };
+    this.pos = { x: 10, y: 400 };
   }
 
   draw(c) {
@@ -21,22 +27,18 @@ export default class Ball {
     if (this.pos.x < 0 || this.pos.x + this.size > this.gameWidth) {
       this.speed.x = -this.speed.x;
     }
-    if (this.pos.y < 0 || this.pos.y + this.size > this.gameHeight) {
+    if (this.pos.y < 0) {
       this.speed.y = -this.speed.y;
     }
 
-    let botBall = this.pos.y + this.size;
-    let topPaddle = this.game.paddle.pos.y;
-    let leftPaddle = this.game.paddle.pos.x;
-    let rightPaddle = leftPaddle + this.game.paddle.width;
+    if (this.pos.y + this.size > this.gameHeight) {
+      this.game.lives--;
+      this.reset();
+    }
 
-    if (
-      botBall >= topPaddle &&
-      this.pos.x >= leftPaddle &&
-      this.pos.x + this.size <= rightPaddle
-    ) {
+    if (detectionCollision(this, this.game.paddle)) {
       this.speed.y = -this.speed.y;
-      this.pos.y = topPaddle - this.size;
+      this.pos.y = this.game.paddle.pos.y - this.size;
     }
   }
 }
